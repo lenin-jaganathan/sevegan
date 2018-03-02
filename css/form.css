@@ -1,0 +1,35 @@
+.card{
+    display: block;
+    position: absolute;
+    padding: 0 30px 10px 30px;
+    width: 50%;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+    top : 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    min-height: 50vh;
+    margin: 40px 0;
+}
+input{
+      padding: 0 0 0 10px;
+      font-size: 16px !important;
+}
+input:focus{
+    outline: none !important;
+    border: none !important;
+}
+@media screen and (max-width: 668px){
+    .card{
+        width: 80%;
+        padding: 10px;
+    }
+}
+select{
+    width: calc(100% - 3rem);
+    outline: none;
+    border: none;
+    margin-left: 3rem;
+    border-bottom: 1px solid #bdbdbd;
+    margin-top: 10px;
+}
+

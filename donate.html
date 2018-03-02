@@ -1,0 +1,63 @@
+<html>
+<head>
+    <title>Sevagan - Valuing each and every life</title>
+    <link rel="icon" href="assets/icon.jpg" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://use.fontawesome.com/4b9db7e2e2.js"></script>
+    <script src="scripts/jquery.js"></script>
+    <script src="scripts/bootstrap.min.js"></script>
+    <script src="scripts/basescript.js"></script>
+    <script src="scripts/others.js"></script>
+    <style>
+        body{
+            background: url("assets/donate.jpg");
+        }
+        .btn-open:after {
+            color:#333;
+            content:"\f0c9";
+            color: white;
+            font-family:"FontAwesome";
+            transition-property:all .2s linear 0s;
+            -moz-transition:all .2s linear 0s;
+            -webkit-transition:all .2s linear 0s;
+            -o-transition:all .2s linear 0s;
+        }
+    </style>
+</head>
+<body onload="checktype()">
+<nav>
+    <div class="header">
+        <h2  style="color: white">SEVAGAN</h2>
+    </div>
+    <div class="button" style="color: white">
+        <a class="btn-open" href="#" style="color: white"></a>
+    </div>
+</nav>
+<div class="overlay">
+    <div class="wrap">
+        <div class="overlaynav">
+            <ul>
+                <li ><a href="index.html">Home</a></li>
+                <li id="donate"><a href="donate.html">Donate blood</a></li>
+                <li id="raisebloodreq"><a href="request.html" >Raise a Request</a></li>
+                <li id="camp"><a href="camp.html">Blood Camps</a></li>
+                <li id="fund"><a href="fund.html">Raise Funds</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li id="logout" style="display: none"><a href="#" onclick="logout()">Logout</a></li>
+                <li id="login" style="display: block"><a href="login.html">Login</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="content">
+    <div class="container">
+        <p class="text-center" style="color: white;font-size: 36px;margin-bottom: 10px">Patients list</p>
+        <div class="row" id="row">
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

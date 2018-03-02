@@ -1,0 +1,216 @@
+<html>
+<head>
+    <title>Sevagan - Valuing each and every life</title>
+    <link rel="icon" href="assets/icon.jpg" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.4.3/css/mdb.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/form.css">
+    <script src="scripts/jquery.js"></script>
+    <script src="scripts/bootstrap.min.js"></script>
+    <script src="scripts/basescript.js"></script>
+    <script src="scripts/others.js"></script>
+    <style>
+        select{
+            margin-left: 0px;
+        }
+        body{
+            background-image: url("assets/request.jpg");
+        }
+        select{
+            background-color: transparent;
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <div class="header">
+        <h2>SEVAGAN</h2>
+    </div>
+    <div class="button" style="color: white">
+        <a class="btn-open" href="#" style="color: white"></a>
+    </div>
+</nav>
+<div class="overlay">
+    <div class="wrap">
+        <div class="overlaynav">
+            <ul>
+                <li ><a href="index.html">Home</a></li>
+                <li id="donate"><a href="donate.html">Donate blood</a></li>
+                <li id="raisebloodreq"><a href="request.html" >Raise a Request</a></li>
+                <li id="camp"><a href="camp.html">Blood Camps</a></li>
+                <li id="fund"><a href="fund.html">Raise Funds</a></li>
+                <li><a href="food.html">Food</a></li>
+                <li id="logout" style="display: none"><a href="#" onclick="logout()">Logout</a></li>
+                <li id="login" style="display: block"><a href="login.html">Login</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="content">
+<div class="container" >
+    <div class="carder ripe-malinka-gradient form-white" id="card" style="margin-top: 150px">
+        <div class="card-body">
+            <h3 class="text-center default-text py-3">Raise Request</h3>
+            <!--Body-->
+            <div class="md-form">
+                <select id="bg"  style="margin-left: 0px;width: 100%">
+                    <option value="" style="color : #bdbdbd">Blood Group</option>
+                    <option value="1">O+</option>
+                    <option value="2">A+</option>
+                    <option value="3">AB+</option>
+                    <option value="4">B+</option>
+                    <option value="5">O-</option>
+                    <option value="6">A-</option>
+                    <option value="7">AB-</option>
+                    <option value="8">B-</option>
+                </select>
+            </div>
+            <div class="md-form">
+                <input type="text" id="name" class="form-control" placeholder="Patient name">
+            </div>
+            <div class="md-form">
+                <input type="number" id="units" class="form-control" placeholder="Units Required">
+            </div>
+            <div class="md-form">
+                <select id="case" style="margin-left: 0px;width: 100%">
+                    <option value="" style="color : #bdbdbd">Case Type</option>
+                    <option value="1">Serious</option>
+                    <option value="2">Normal</option>
+                </select>
+            </div>
+            <div class="md-form">
+                <input type="number" id="phone" class="form-control" placeholder="Phone">
+            </div>
+            <div class="md-form">
+                <input id="pac-input" class="controls  form-control" type="text" placeholder="Patient location" onchange="getLocation()">
+            </div>
+            <div id="map"></div>
+            <div id="errors" style="color: red;padding: 10px"></div>
+            <div id="success" style="color: green;padding: 10px"></div>
+            <div class="text-center">
+                <button class="btn btn-default waves-effect waves-light" onclick="submitrequest()">Submit</button><br>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+<script>
+    // This example adds a search box to a map, using the Google Place Autocomplete
+    // feature. People can enter geographical searches. The search box will return a
+    // pick list containing a mix of places and predicted search terms.
+
+    // This example requires the Places library. Include the libraries=places
+    // parameter when you first load the API. For example:
+    // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+
+    function initAutocomplete() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: -33.8688, lng: 151.2195},
+            zoom: 13,
+            mapTypeId: 'roadmap'
+        });
+
+        // Create the search box and link it to the UI element.
+        var input = document.getElementById('pac-input');
+        var searchBox = new google.maps.places.SearchBox(input);
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+        // Bias the SearchBox results towards current map's viewport.
+        map.addListener('bounds_changed', function() {
+            searchBox.setBounds(map.getBounds());
+        });
+
+        var markers = [];
+        // Listen for the event fired when the user selects a prediction and retrieve
+        // more details for that place.
+        searchBox.addListener('places_changed', function() {
+            var places = searchBox.getPlaces();
+
+            if (places.length == 0) {
+                return;
+            }
+
+            // Clear out the old markers.
+            markers.forEach(function(marker) {
+                marker.setMap(null);
+            });
+            markers = [];
+
+            // For each place, get the icon, name and location.
+            var bounds = new google.maps.LatLngBounds();
+            places.forEach(function(place) {
+                if (!place.geometry) {
+                    console.log("Returned place contains no geometry");
+                    return;
+                }
+                var icon = {
+                    url: place.icon,
+                    size: new google.maps.Size(71, 71),
+                    origin: new google.maps.Point(0, 0),
+                    anchor: new google.maps.Point(17, 34),
+                    scaledSize: new google.maps.Size(25, 25)
+                };
+
+                // Create a marker for each place.
+                markers.push(new google.maps.Marker({
+                    map: map,
+                    icon: icon,
+                    title: place.name,
+                    position: place.geometry.location
+                }));
+
+                if (place.geometry.viewport) {
+                    // Only geocodes have viewport.
+                    bounds.union(place.geometry.viewport);
+                } else {
+                    bounds.extend(place.geometry.location);
+                }
+            });
+            map.fitBounds(bounds);
+        });
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBj-QH6W5CbVIX53fJjMnfYVtVG4yQlJ74&libraries=places&callback=initAutocomplete"
+        async defer></script>
+    <script>
+        var setCookie=function (cname,cvalue,exdays) {
+            var d = new Date();
+            d.setTime(d.getTime() + (exdays*24*60*60*1000));
+            var expires = "expires="+ d.toUTCString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
+        var getCookie=function (cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for(var i = 0; i <ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) === ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) === 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        };
+    var getLocation =  function() {
+        var address = document.getElementById("pac-input").value;
+        var geocoder = new google.maps.Geocoder();
+        geocoder.geocode( { 'address': address}, function(results, status) {
+
+            if (status == google.maps.GeocoderStatus.OK) {
+                var latitude = results[0].geometry.location.lat();
+                var longitude = results[0].geometry.location.lng();
+                setCookie('lat',latitude,0.2);
+                setCookie('lon',longitude,0.2);
+            }
+        });
+    }
+</script>
+</body>
+</html>
